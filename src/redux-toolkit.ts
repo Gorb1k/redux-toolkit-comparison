@@ -1,9 +1,11 @@
 import { configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit"
-import {v1} from "uuid";
+import { v1 } from "uuid";
 
-import {Todo} from "./type";
+import { Todo } from "./type";
 
-const initialState: Todo[] = [
+type TodosState = Array<Todo>
+
+const initialState: TodosState = [
     {
         id: v1(),
         desc: "Learn React",
@@ -26,10 +28,10 @@ const todosSlice = createSlice({
     initialState,
     reducers: {
         create: {
-            reducer: (state: Todo[], {payload}: PayloadAction<{ id: string, desc: string, isComplete: boolean }>) => {
+            reducer: (state, { payload }: PayloadAction<{ id: string, desc: string, isComplete: boolean }>) => {
                 state.push(payload)
             },
-            prepare: ({desc}: { desc: string }) => ({
+            prepare: ({ desc }: { desc: string }) => ({
                 payload: {
                     id: v1(),
                     desc,
@@ -37,19 +39,19 @@ const todosSlice = createSlice({
                 }
             })
         },
-        edit: (state: Todo[], {payload}: PayloadAction<{ id: string, decs: string }>) => {
+        edit: (state, { payload }: PayloadAction<{ id: string, desc: string }>) => {
             const todoToEdit = state.find(todo => todo.id === payload.id)
             if (todoToEdit) {
                 todoToEdit.desc = payload.desc
             }
         },
-        toggle: (state: Todo[], {payload}: PayloadAction<{ id: string, isComplete: boolean }>) => {
+        toggle: (state, { payload }: PayloadAction<{ id: string, isComplete: boolean }>) => {
             const todoToToggle = state.find(todo => todo.id === payload.id)
             if (todoToToggle) {
                 todoToToggle.isComplete = payload.isComplete
             }
         },
-        remove: (state: Todo[], {payload}: PayloadAction<{ id: string }>) => {
+        remove: (state, { payload }: PayloadAction<{ id: string }>) => {
             const index = state.findIndex(todo => todo.id === payload.id)
             if (index !== -1) {
                 state.splice(index, 1)
@@ -59,12 +61,12 @@ const todosSlice = createSlice({
 })
 
 const selectedTodoSlice = createSlice({
-        name: 'selectedTodo',
-        initialState: null as string | null,
-        reducers: {
-            select: (state: string | null, {payload}: PayloadAction<{ id: string }>) => payload.id
-        }
+    name: 'selectedTodo',
+    initialState: null as string | null,
+    reducers: {
+        select: (state, { payload }: PayloadAction<{ id: string }>) => payload.id
     }
+}
 )
 const counterSlice = createSlice({
     name: 'counter',
@@ -81,16 +83,16 @@ export const {
     create: createTodoActionCreator,
     remove: deleteTodoActionCreator,
     toggle: toggleTodoActionCreator,
-    edit : editTodoActionCreator
+    edit: editTodoActionCreator
 } = todosSlice.actions
-export const {select: selectTodoActionCreator} = selectedTodoSlice.actions
+export const { select: selectTodoActionCreator } = selectedTodoSlice.actions
 
-const reducer = {
-    todos: todosSlice.reducer,
-    selectedTodo: selectedTodoSlice.reducer,
-    counter: counterSlice.reducer
-}
+
 
 export default configureStore({
-    reducer
+    reducer: {
+        todos: todosSlice.reducer,
+        selectedTodo: selectedTodoSlice.reducer,
+        counter: counterSlice.reducer
+    }
 })

@@ -7,6 +7,7 @@ import {Provider} from "react-redux";
 import store from './redux-toolkit'
 
 ReactDOM.render(
+    // @ts-ignore
     <Provider store={store}>
         <App/>
     </Provider>,

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/rtk.iml" filepath="$PROJECT_DIR$/.idea/rtk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/redux-toolkit-comparison.iml" filepath="$PROJECT_DIR$/.idea/redux-toolkit-comparison.iml" />
     </modules>
   </component>
 </project>
